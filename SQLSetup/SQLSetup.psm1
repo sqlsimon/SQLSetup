@@ -50,7 +50,7 @@ function Get-TempDbDrive ()
 
 
 <# Get the drive size and free space of the drive passed in #>
-function Get-TempDbDriveSize {
+ffunction Get-TempDbDriveSize {
  [CmdletBinding()] 
     param( 
     [Parameter(Position=0, Mandatory=$true)] [String]$TempDbDataDrive
@@ -61,10 +61,11 @@ function Get-TempDbDriveSize {
    }
 
 	$DataDriveStats = Get-WMIObject Win32_Logicaldisk -filter "deviceid='C:'"  | Select @{Name="SizeGB";Expression={$_.Size/1GB -as [int]}},
-	@{Name="FreeGB";Expression={[math]::Round($_.Freespace/1GB,2)}} 
+	@{Name="FreeGB";Expression={[math]::Round($_.Freespace/1GB,2)}},@{Name="SizeMB";Expression={$_.Size/1MB -as [int]}} 
 
 	return $DataDriveStats
 }
+
 
 <# 
 calculate the size of an individual tempdb data file based on the number of files specified, the amount of free
